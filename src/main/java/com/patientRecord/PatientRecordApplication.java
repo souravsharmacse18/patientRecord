@@ -8,6 +8,7 @@ public class PatientRecordApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PatientRecordApplication.class, args);
+		System.out.println("Run Successfully");
 	}
 
 }
