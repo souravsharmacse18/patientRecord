@@ -36,16 +36,10 @@ public class AppointmentController {
 		try {
 			System.out.println(email+" / "+appointDate+" / "+appointmentTime);
 			if(email != null || email != "") {
-				//long uid = Long.parseLong(userid);
 				User getUserById = userRepo.findByEmailId(email);
 				System.out.println("User data >> "+getUserById.getEmailId()+" || and "+getUserById.getId());
 				Appointment appointment = new Appointment();
 				if(appointDate != null || appointDate != "") {
-					/*
-					 * DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy"); LocalDate
-					 * localDate = LocalDate.parse(appointDate, dtf);
-					 * System.out.println("System local date || "+localDate);
-					 */
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 					Date aptDate = sdf.parse(appointDate);
 					System.out.println("Appointment Date : "+aptDate);
