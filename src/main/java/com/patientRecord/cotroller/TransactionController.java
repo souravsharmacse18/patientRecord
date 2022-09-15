@@ -1,6 +1,5 @@
 package com.patientRecord.cotroller;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -87,9 +86,6 @@ public class TransactionController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	
-	
 	@RequestMapping(value = "/api/monthlyrevenue", method = {RequestMethod.GET, RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<Double> getMonthlyRevenue(HttpServletRequest request){
 		logger.info("Monthly data function is calling !!");
@@ -126,40 +122,25 @@ public class TransactionController {
 	public ResponseEntity<Double> getYearlyRevenue(HttpServletRequest request){
 		logger.info("Yearly data function is calling !!");
 		try {
-			 Calendar cal = Calendar.getInstance();
-		      Date cdate = cal.getTime();
-		      // get next year
-		      cal.add(Calendar.YEAR, 1); 
-		      Date nyear = cal.getTime();
-		      
-		      System.out.println(cdate);
-		      System.out.println(nyear);
 			
-			
-			
-			
-			/*
-			 * int year = Calendar.getInstance().get(Calendar.YEAR);
-			 * System.out.println(year);
-			 * 
-			 * LocalDate ld = LocalDate.now(); int year1 = ld.getYear();
-			 * System.out.println("year 1 "+year1);
-			 */
-			
-			/*
-			 * org.joda.time.LocalDate beginMonth = new
-			 * org.joda.time.LocalDate().withDayOfYear(1); System.out.println(beginMonth);
-			 * org.joda.time.LocalDate endMonth = new org.joda.time.LocalDate().plusYears(1)
-			 * .withDayOfYear(1).minusYears(1); System.out.println(endMonth);
-			 */
-
+			Calendar calender = Calendar.getInstance();
+			Date today = calender.getTime();
+			calender.add(Calendar.YEAR, 1);
+			Date nextYear = calender.getTime();
+			System.out.println("Current year : "+today);
+			System.out.println("next year : "+nextYear);
+			double sum = 0;
+			List<TransactionDetails> annualList = transactionrepo.findByPaymentdateGreaterThanEqualAndPaymentdateLessThanEqual(today, nextYear);
+			System.out.println("List size : "+annualList.size());
+			for(int i = 0; i < annualList.size(); i++) {
+				sum = sum + annualList.get(i).getAmount();
+			}
+			System.out.println("Annual revenue sum : "+sum);
+			return ResponseEntity.ok(sum);
 		}catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
-		
-		
-		
-		
-		return null;
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
